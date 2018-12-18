@@ -1,0 +1,153 @@
+#Erik Turchi Lab 1
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#Q1 import csv files
+IBM <- read.csv("IBMStock.csv", header = TRUE)
+GE <- read.csv("GEStock.csv", header = TRUE)
+ProcterGamble <? read.csv("ProcterGambleStock.csv", header = TRUE)
+CocaCola <- read.csv("CocaColaStock.csv", header = TRUE)
+Boeing <- read.csv("BoeingStock.csv", header = TRUE)
+
+
+#Q2 check each data field using str() function
+str(IBM)
+str(GE)
+str(ProcterGamble)
+str(CocaCo?a)
+str(Boeing)
+
+
+#Q3 Clean Data to as.Date Function
+GE$Date = as.Date(GE$Date, "%m/%d/%y") 
+IBM$Date = as.Date(IBM$Date, "%m/%d/%y") 
+ProcterGamble$Date = as.Date(ProcterGamble$Date, "%m/%d/%y") 
+CocaCola$Date = as.Date(CocaCola$Date, "%m/%d/%y") 
+Boeing$D?te = as.Date(Boeing$Date, "%m/%d/%y") 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#Warmup and Basic Q's
+
+
+#1. How many rows of data are in each dataset?
+#using the str() function it shows in?the console 480 obj(or in this case rows) per data set, as well as 2 columns
+str(Boeing)
+str(IBM)
+str(GE)
+str(ProcterGamble)
+str(CocaCola)
+
+
+#2. What is the earliest/latest year in our datasets?
+#using the head() and tail() funtions we can assign a value o? 1 column to show the earliest and latest peice of data in the datasets
+#other datasets using mismatched dates and times can be filtered using queries such as dateORder = order(date) and than arrange(dateOrder)
+head(Boeing, 1)
+tail(Boeing, 1)
+
+head(CocaCol?, 1)
+tail(CocaCola, 1)
+
+head(ProcterGamble, 1)
+tail(ProcterGamble, 1)
+
+head(IBM, 1)
+tail(IBM, 1)
+
+head(GE, 1)
+tail(GE, 1)
+
+
+#3. For the period above what is the average stock price of Coca Cola?
+#we can display the average or 'mean' stockprice over the ent?re dataset of 'CocaCola' with plotmeans 
+library(ggplot2)
+library(gplots)
+plotmeans(StockPrice ~ Date, data = CocaCola, frame = FALSE)
+
+#The mean of the StockPrice Column in CocaCola is 60.03
+mean(CocaCola[["StockPrice"]])
+
+
+#4. What is the maximum price o? IBM during this period?
+#The max stock price of IBM is 438.90
+max(IBM["StockPrice"])
+
+
+#5. What is the standard deviation of P&G stock price over this period?
+#ProcterGamble's standard variation (sq root of varience) is displayed with sd() function and is?18.19
+sd(ProcterGamble[["StockPrice"]])
+
+
+#6. What is the median price of Boeing in the last 5 years for which we have data?
+#The median of Boeing from the past 5 years of collected data as 64.96
+Boeing2 <- read.csv ("Boeing2004Up.csv", header = TRUE)
+Boei?g2$Date = as.Date(Boeing2$Date, "%m/%d/%y") 
+median(Boeing2[["StockPrice"]])
+  
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#Basic Plotting Questions
+
+#Part 1:  Plot the StockPrice of Coca-Col? on the Y-axis across Date on the x-axis using the basic plot() 
+
+
+plot(StockPrice ~ Date, data = CocaCola, frame = FALSE)
+
+plot(StockPrice ~ Date, data = CocaCola, type = 'l', frame = TRUE, col="red")
+lines(ProcterGamble$Date, ProcterGamble$StockPrice,col?= "blue")
+
+plotmeans(StockPrice ~ Date, data = CocaCola)
+
+
+#A1 :  The highest Stock Price Year for coca cola was 1973 and its lowest year being 1980
+
+#A2 :  The highest percentage increase Year OVer Year was 1971 to 1972 with an estimated 55% growth span
+
+?#A2 : Adding P&G
+  
+#A1 :  P&G's Stock Dropped More percentage wise than CocaColas
+
+#A2 :  In 1983 CocaColas Stocks Were on the rise as P&G's took a sharp drop
+
+#A3 :  Across the entire plot CocaColas Stocks were a generally lower price
+
+#~~~~~~~~~~~~~~~?~?~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#Data Visualization from 1995 - 2005:
+
+
+plot(CocaCola$Date[301:432],CocaCola$StockPrice[301:432],type = 'l', col = 'red', ylim=c(0,210))
+lines(IBM$Date[301:432],IBM$S?ockPrice[301:432], col = 'Blue')
+lines(ProcterGamble$Date[301:432],ProcterGamble$StockPrice[301:432], col = 'green')
+lines(Boeing$Date[301:432],Boeing$StockPrice[301:432], col = 'orange')
+lines(GE$Date[301:432],GE$StockPrice[301:432], col = 'purple')
+
+
+#A1?:  GE's Stock Fell the most right after the 2000 bubble
+
+#A2 :  IBM had the highest price maximum between 1995 and 2005
+
+#A3 :  The companies experiencing a decrease were: IBM, P&G, Boeing, and GE
+#      the largest drop experienced was P&G
+#      Coca Col? was the only comany that didnt see a massive drop just a tiny bump is a steady growth period
+
+#A4 :  The stock providing the best return in this era belonged to Boeing
+
+#A5 :  IBM had the largest Delta between the max and Min of the stock price
+
+#A6 :  th? most coorilated stocks would be GE and P&G
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#Monthly Trend Analysis
+
+tapply(IBM$StockPrice, months(IBM$Date), mean, simplify = TRUE)
+tapply(Cocaco?a$StockPrice, months(CocaCola$Date), mean)
+tapply(ProcterGamble$StockPrice, months(ProcterGamble$Date), mean)
+tapply(Boeing$StockPrice, months(Boeing$Date), mean)
+tapply(GE$StockPrice, months(GE$Date), mean)
+
+
+#A1 :  IBM's Historic 'good' months are Janu?r?, February, March, April, and May, a historically successful first half to the year
+
+#A2 :  G&E, coca cola, and IBM have very similar high points in the same months: January, February, March, April, and May respectivly
+
+#A3 :  December for every company ?s?a low point aside from but not excluding coca cola(3rd lowest month) It seems december to january 
+#      is always a jump upwards in stock prices with most companies almost having their highest averaging months during january
