@@ -1,0 +1,126 @@
+```{r}
+housing <- read.csv("housing.csv")
+library(ggplot2)
+library(dplyr)
+```
+
+#Time to Check the data
+```{r}
+head(housing)
+```
+
+#checking data types
+```{r}
+str(housing)
+```
+
+#check statistics
+```{r}
+summary(housing)
+```
+
+#we look into which data has NULL values
+```{r}
+colSums(is.na(housing))
+```
+
+#for all data na in total_bedroooms replace with median of total_bedrooms as outliers wont come into affect
+```{r}
+housing$total_bedrooms[is.na(housing$total_bedrooms)] <- median(housing$total_bedrooms, na.rm = TRUE)
+```
+```{r}
+summary(housing$total_bedrooms)
+```
+
+#creating dummy variables for ocean_proximity
+```{r}
+library(fastDummies)
+```
+```{r}
+h1 <- dummy_cols(housing$ocean_proximity, remove_first_dummy = TRUE)
+```
+
+#binding dummies to housing dataset
+```{r}
+housing <- cbind(housing,h1[-c(1)])
+```
+
+# find average bedrooms per household
+```{r}
+housing$mean_bedrooms = housing$total_bedrooms/housing$households
+```
+#find average rooms per household
+```{r}
+housing$mean_rooms = housing$total_rooms/housing$households
+```
+#create omit for columns total_rooms and total_bedrooms; omit ocean_proximity column now that dummy variables have been created
+```{r}
+omit = c("total_rooms", "total_bedrooms","ocean_proximity")
+```
+#use omit to take the total housing and bedrooms out of dataset since we have mean room and bedroom now created
+```{r}
+housing <- housing[ , !(names(housing) %in% omit)]
+```
+
+```{r}
+str(housing)
+```
+#load libraries for data visualization
+```{r}
+library(ggplot2)
+library(gplots)
+```
+```{r}
+library(plotly)
+packageVersion('plotly')
+```
+
+
+```{r}
+ggplot(housing, aes(housing_median_age)) +
+  geom_histogram(bins = 100)
+```
+
+```{r}
+ggplot(housing, aes(housing_median_age)) +
+  geom_density()
+```
+
+```{r}
+p1 <- plot_ly(housing, x = ~median_income)%>% add_histogram()
+p2 <- plot_ly(housing, x = ~median_house_value)%>% add_histogram()
+subplot(p1,p2)
+
+#on the left:  median income distribution
+#on the right: median house value distribution
+```
+
+```{r}
+ggplot() +
+  geom_point(data = housing, aes(x = median_house_value, y = population), color = "red")
+```
+
+
+```{r}
+install.packages(c("ggplot2", "devtools", "dplyr", "stringr"))
+```
+```{r}
+install.packages(c("maps", "mapdata"))
+```
+```{r}
+library(ggplot2)
+library(maps)
+library(mapdata)
+```
+```{r}
+library(ggplot2)
+library(leaflet)
+library(leaflet.extras)
+```
+
+```{r}
+leaflet(housing)%>%
+  addWebGLHeatmap(size=35000)%>%
+  addProviderTiles(providers$CartoDB.DarkMatter)
+```
+
