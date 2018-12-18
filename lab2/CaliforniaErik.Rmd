@@ -3,6 +3,12 @@ housing <- read.csv("housing.csv")
 library(ggplot2)
 library(dplyr)
 ```
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#Erik Turchi Housing Code
+#YorkBigData
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 #Time to Check the data
 ```{r}
@@ -75,6 +81,8 @@ library(plotly)
 packageVersion('plotly')
 ```
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#data visualization
 
 ```{r}
 ggplot(housing, aes(housing_median_age)) +
@@ -99,7 +107,8 @@ subplot(p1,p2)
 ggplot() +
   geom_point(data = housing, aes(x = median_house_value, y = population), color = "red")
 ```
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#setup....
 
 ```{r}
 install.packages(c("ggplot2", "devtools", "dplyr", "stringr"))
@@ -118,9 +127,19 @@ library(leaflet)
 library(leaflet.extras)
 ```
 
+
+#display heatmap of our data spanning across california
 ```{r}
 leaflet(housing)%>%
   addWebGLHeatmap(size=35000)%>%
   addProviderTiles(providers$CartoDB.DarkMatter)
 ```
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#Modeling
+
+
+
+
 
