@@ -123,9 +123,8 @@ subplot(px)
 
 
 ```{r}
-py = plot_ly(alpha = 0.6, data = h1)%>%
-  add_histogram(x = ~)%>%
-  add_histogram(x = ~ + 1)%>%
+py = plot_ly(alpha = 0.6, data = housing)%>%
+  add_histogram(x = ~ocean_proximity)%>%
   layout(barmode = "overlay")
 subplot(py)
 ```
