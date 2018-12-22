@@ -1,0 +1,229 @@
+#Erik Turchi Lab 1
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+
+
+#Q1 import csv files
+```{r}
+IBM <- read.csv("IBMStock.csv", header = TRUE)
+GE <- read.csv("GEStock.csv", header = TRUE)
+ProcterGamble <- read.csv("ProcterGambleStock.csv", header = TRUE)
+CocaCola <- read.csv("CocaColaStock.csv", header = TRUE)
+Boeing <- read.csv("BoeingStock.csv", header = TRUE)
+```
+
+
+
+#Q2 check each data field using str() function
+```{r}
+str(IBM)
+str(GE)
+str(ProcterGamble)
+str(CocaCola)
+str(Boeing)
+```
+
+
+
+#Q3 Clean Data to as.Date Function
+```{r}
+GE$Date = as.Date(GE$Date, "%m/%d/%y") 
+IBM$Date = as.Date(IBM$Date, "%m/%d/%y") 
+ProcterGamble$Date = as.Date(ProcterGamble$Date, "%m/%d/%y") 
+CocaCola$Date = as.Date(CocaCola$Date, "%m/%d/%y") 
+Boeing$Date = as.Date(Boeing$Date, "%m/%d/%y") 
+```
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#Warmup and Basic Q's
+
+
+
+#1. How many rows of data are in each dataset?
+```{r}
+str(Boeing)
+str(IBM)
+str(GE)
+str(ProcterGamble)
+str(CocaCola)
+```
+#A1:  using the str() function it shows in?the console 480 obj(or in this case rows) per data set, as well as 2 columns
+
+
+
+#2. What is the earliest/latest year in our datasets?
+```{r}
+head(Boeing, 1)
+tail(Boeing, 1)
+
+head(CocaCola, 1)
+tail(CocaCola, 1)
+
+head(ProcterGamble, 1)
+tail(ProcterGamble, 1)
+
+head(IBM, 1)
+tail(IBM, 1)
+
+head(GE, 1)
+tail(GE, 1)
+```
+#A2:  using the head() and tail() funtions we can assign a value o? 1 column to show the earliest and latest peice of data in the datasets
+#     other datasets using mismatched dates and times can be filtered using queries such as dateORder = order(date) and than arrange(dateOrder)
+
+
+
+#3. For the period above what is the average stock price of Coca Cola?
+```{r}
+library(ggplot2)
+library(gplots)
+plotmeans(StockPrice ~ Date, data = CocaCola)
+```
+#we can display the average or 'mean' stockprice over the ent?re dataset of 'CocaCola' with plotmeans 
+
+```{r}
+mean(CocaCola[["StockPrice"]])
+```
+#A3:  The mean of the StockPrice Column in CocaCola is 60.03
+
+
+
+#4. What is the maximum price of IBM during this period?
+```{r}
+max(IBM["StockPrice"])
+```
+#A4:  The max stock price of IBM is 438.90
+
+
+
+#5. What is the standard deviation of P&G stock price over this period?
+```{r}
+sd(ProcterGamble[["StockPrice"]])
+```
+#A5: ProcterGamble's standard variation (sq root of varience) is displayed with sd() function and is 18.19
+
+
+
+#6. What is the median price of Boeing in the last 5 years for which we have data?
+```{r}
+Boeing2 <- read.csv ("Boeing2004Up.csv", header = TRUE)
+Boeing2$Date = as.Date(Boeing2$Date, "%m/%d/%y") 
+median(Boeing2[["StockPrice"]])
+```
+#A6: The median of Boeing from the past 5 years of collected data as 64.96
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#Basic Plotting Questions
+
+
+
+#Part 1:  Plot the StockPrice of Coca-Col? on the Y-axis across Date on the x-axis using the basic plot() 
+```{r}
+plot(StockPrice ~ Date, data = CocaCola, frame = FALSE)
+```
+#Q1 :  Identify the year during which Coca-Cola had the highest/lowest stock price?
+#A1 :  The highest Stock Price Year for coca cola was 1973 and its lowest year being 1980
+
+#Q2 :  What calendar year did it look to have the biggest (Year-over-Year) percentage increase?
+#A2 :  The highest percentage increase Year OVer Year was 1971 to 1972 with an estimated 55% growth span
+
+
+
+#Part 2 : Adding P&G
+```{r}
+plot(StockPrice ~ Date, data = CocaCola, type = 'l', frame = TRUE, col="red")
+lines(ProcterGamble$Date, ProcterGamble$StockPrice,col = "blue")
+```
+#Q1 : In March of 2000 the stock market plummeted as the tech bubble burst. Using the plot above,
+#     which company’s stock dropped more (relatively – i.e. percentage-wise)?
+#A1 :  P&G's Stock Dropped More percentage wise than CocaColas
+
+#Q2 :  In the year 1983 which company stock was going up? Which was going down?
+#A2 :  In 1983 CocaColas Stocks Were on the rise as P&G's took a sharp drop
+
+#Q3 :  Across the entire time period shown in your plot which stock had a generally lower price?
+#A3 :  Across the entire plot CocaColas Stocks were a generally lower price
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#Data Visualization from 1995 - 2005:
+#~~~~#
+#Instead of looking at the plot across the entire date range, we want to see what’s happening between
+#1995-2005. Remember, you can use the matrix notation [rows, columns] to subset data.
+#~~~~#
+```{r}
+plot(CocaCola$Date[301:432],CocaCola$StockPrice[301:432],type = 'l', col = 'red', ylim=c(0,210))
+lines(IBM$Date[301:432],IBM$StockPrice[301:432], col = 'Blue')
+lines(ProcterGamble$Date[301:432],ProcterGamble$StockPrice[301:432], col = 'green')
+lines(Boeing$Date[301:432],Boeing$StockPrice[301:432], col = 'orange')
+lines(GE$Date[301:432],GE$StockPrice[301:432], col = 'purple')
+```
+
+#Q1 :  Which stock price fell the most right after the tech bubble of March 2000?
+#A1 :  GE's Stock Fell the most right after the 2000 bubble
+
+
+#Q2 :  What stock had the highest maximum price between 1995-2005?
+#A2 :  IBM had the highest price maximum between 1995 and 2005
+
+
+#Q3 :  Afewyearsbeforethetechbubbleof1997,therewasanotherstockmarketcrashtriggedby
+#      economic crisis in Asia in October of 1997. If you compare stock prices from September 1997 to
+#      November 1997, which companies saw a decrease in price? Which company experienced the
+#      biggest decrease?
+#A3 :  The companies experiencing a decrease were: IBM, P&G, Boeing, and GE
+#      the largest drop experienced was P&G
+#      Coca Cola was the only comany that didnt see a massive drop just a tiny bump is a steady growth period
+
+
+#Q4 :  Whichstock seemedtoprovidethebestreturn(i.e.increaseinprice)between2004-2005?
+#A4 :  The stock providing the best return in this era belonged to Boeing
+
+
+#Q5 :  Between 1995-2005, which company had the biggest delta between the maximum and minimum stock price?
+#A5 :  IBM had the largest Delta between the max and Min of the stock price
+
+
+#Q6 : Which two companies’ stock price seem to be the most correlated (i.e. move up/down together)?
+#A6 :  the most coorilated stocks would be GE and P&G
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#Monthly Trend Analysis
+
+```{r}
+tapply(IBM$StockPrice, months(IBM$Date), mean, simplify = TRUE)
+```
+```{r}
+tapply(ProcterGamble$StockPrice, months(ProcterGamble$Date), mean)
+```
+```{r}
+tapply(Boeing$StockPrice, months(Boeing$Date), mean)
+```
+```{r}
+tapply(GE$StockPrice, months(GE$Date), mean)
+```
+
+#Q1 :  For IBM ,compare the average stock price for each month tothe its overall average stockprice
+#      and identify all the months for which IBM historically had a higher stockprice(we call this over indexing)? Which month over-indexed the most?
+#A1 :  IBM's Historic 'good' months are Janu?ry, February, March, April, and May, a historically successful first half to the year
+
+
+#Q2 :  Repeatthetapply()functionyouusedtosolve thelastquestionforeachofthe4remaining
+#      companies. Do any of two or more companies have their highest stock price in the same months
+#      as each other? Which companies and months does this happen for?
+#A2 :  G&E, coca cola, and IBM have very similar high points in the same months: January, February, March, April, and May respectivly
+
+
+#Q3 :  What trend do you see for the months of December vs January for each company? Is there an
+#      over-arching trend that applies to all companies when comparing all historical December vs
+#      January stock prices?
+#A3 :  December for every company ?s a low point aside from but not excluding coca cola(3rd lowest month) It seems december to january 
+#      is always a jump upwards in stock prices with most companies almost having their highest averaging months during january
+
+
