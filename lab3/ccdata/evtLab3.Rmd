@@ -1,0 +1,111 @@
+```{r}
+cred <- read.csv("CC GENERAL.csv")
+library(ggplot2)
+library(dplyr)
+library(plotly)
+library(gplots)
+```
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#Erik Turchi Lab 3
+#12/26/18
+#York University
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#Summary
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+```{r}
+head(cred)
+```
+```{r}
+str(cred)
+```
+
+```{r}
+summary(cred)
+
+```
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#Visualizations
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+
+
+```{r}
+ggplot() +
+  geom_point(data = cred, aes(x = CASH_ADVANCE_FREQUENCY, y = PURCHASES), color = "red")
+  
+```
+
+```{r}
+ggplot() +
+  geom_point(data = cred, aes(x = PURCHASES_FREQUENCY, y = CASH_ADVANCE_TRX ), color = "blue")
+  
+```
+
+```{r}
+ggplot() +
+  geom_point(data = cred, aes(x = PURCHASES_INSTALLMENTS_FREQUENCY, y = PURCHASES), color = "orange")
+  
+```
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#Modelling using Multicollinearity Regression
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+
+```{r}
+library(readxl)
+```
+
+```{r}
+credi <- cred[,c(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18)]
+```
+
+
+```{r}
+head(credi)
+```
+
+#fit data into model
+```{r}
+fit1 <- lm(BALANCE_FREQUENCY ~ BALANCE + PURCHASES + INSTALLMENTS_PURCHASES + CASH_ADVANCE + ONEOFF_PURCHASES_FREQUENCY + CASH_ADVANCE_TRX + PURCHASES_TRX, data = credi)
+```
+
+#print a summary of the fitted data
+```{r}
+summary(fit1)
+```
+
+
+
+#display fitted model
+```{r}
+par(mfrow=c(2,2))
+plot(fit1)
+```
+#plot diagnosis
+The plots only show coorilation between residuals and fitted data fields, it is possible the multicollinearity problem is the reason for a low regression coefficiency level.
+next we will look into a pair wise correlation 
+
+
+```{r}
+xr <- fit1[3 : 3 : 12]
+library(GGally)
+fortify(fit1)
+ggpairs(fit1)
+```
+
+#pair analysis
+the coorilation matrix shows thaty the pair wise correlation is not sufficient, 
+the lack of high correlation could be a sign that there is not a high percent of multicollinerity in the data set.
+this could be useful to adjust linear regression models as minor changes to coding wont severly impact outcomes
+of the model. If the model showed large signs of mulitcollinarity changed to the data such as changing predictors,
+or even testing muliple predictors until the most efficient one is located. As this data set doesnt show any signs 
+of severe multicollinarity no further changes to the data is needed for a linear regression approach
